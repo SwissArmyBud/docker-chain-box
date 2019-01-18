@@ -1,0 +1,28 @@
+version: '3'
+services:
+
+  geth_client_1:
+    image: tournament/eth_go_client:latest
+    restart: always
+    networks:
+      geth_back:
+        aliases:
+          - eth_client_1
+    ports:
+      - "30300:30303"
+      - "30300:30303/udp"
+
+  eth_net_front:
+    image: tournament/eth_net_front:latest
+    environment:
+      - COMPOSE_EXPORT_PUTTY=$COMPOSE_EXPORT_VAR
+    restart: always
+    networks:
+      geth_back:
+        aliases:
+          - eth_net_front
+    ports:
+      - "3000:3000"
+
+networks:
+  geth_back:

@@ -1,0 +1,7 @@
+# gitignore
+
+# Ignore production token loaders
+*TokenLoader.ps1
+
+# Ignore all generated files
+/Tournament*
