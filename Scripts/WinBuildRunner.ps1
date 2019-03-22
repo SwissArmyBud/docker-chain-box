@@ -55,11 +55,23 @@ foreach($PROJECT in $DOCKER_PROJECTS) {
   ECHO ${NL}
 }
 
+# Todo - Split this off into a project-manageable section for decoupling
+# Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
 # Move composer to build directory
 Copy-Item ./docker-compose.yaml -Destination ./Tournament
+# Move compose-time token loader to build
+Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament
+# Move runner to build
+Copy-Item ./Scripts/ProjectRunner.ps1 -Destination ./Tournament
+# Move chain to build
+Copy-Item ./ETH_GO_CLIENT/datadir -Destination ./Tournament/datadir -Recurse
+# Move chain read-outs to build
+Copy-Item ./ETH_GO_CLIENT/accounts.txt -Destination ./Tournament -Recurse
+Copy-Item ./ETH_GO_CLIENT/contracts.txt -Destination ./Tournament -Recurse
+Copy-Item ./ETH_GO_CLIENT/guid.blob -Destination ./Tournament -Recurse
+
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"
-
 # Package up all the images and the compose file for the project
 $ZIP_FOLDER = "$($PWD.Path)/Tournament"
 $ZIP_FILE = "$($PWD.Path)/Tournament.zip"
@@ -73,14 +85,14 @@ if([io.compression.zipfile]::CreateFromDirectory($ZIP_FOLDER, $ZIP_FILE)){
 # Cleanup
 foreach($PROJECT in $DOCKER_PROJECTS) {
 # Alert and process
-  echo "[INFO] -> Cleaning up project: $PROJECT"
+  echo "[INFO] -> (NOT) Cleaning up project: $PROJECT"
 
 # Cleanup all built images
-  docker rmi -f tournament/${PROJECT}:latest
+#  docker rmi -f tournament/${PROJECT}:latest
   ECHO ${NL}
 }
 
 # Clean up any intermediate/builder images
-echo "[INFO] -> Cleaning up intermediate docker images..."
-docker image prune -f
+echo "[INFO] -> (NOT) Cleaning up intermediate docker images..."
+# docker image prune -f
 ECHO ${NL}
