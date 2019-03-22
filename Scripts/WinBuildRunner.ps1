@@ -24,6 +24,7 @@ if(Test-Path ./Tournament){
 }
 New-Item -ItemType directory -Path ./Tournament
 New-Item -ItemType directory -Path ./Tournament/Images
+New-Item -ItemType directory -Path ./Tournament/Scripts
 
 # Build and export images for each project
 foreach($PROJECT in $DOCKER_PROJECTS) {
@@ -60,15 +61,15 @@ foreach($PROJECT in $DOCKER_PROJECTS) {
 # Move composer to build directory
 Copy-Item ./docker-compose.yaml -Destination ./Tournament
 # Move compose-time token loader to build
-Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament
+Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament/Scripts
 # Move runner to build
 Copy-Item ./Scripts/ProjectRunner.ps1 -Destination ./Tournament
 # Move chain to build
 Copy-Item ./ETH_GO_CLIENT/datadir -Destination ./Tournament/datadir -Recurse
 # Move chain read-outs to build
-Copy-Item ./ETH_GO_CLIENT/accounts.txt -Destination ./Tournament -Recurse
-Copy-Item ./ETH_GO_CLIENT/contracts.txt -Destination ./Tournament -Recurse
-Copy-Item ./ETH_GO_CLIENT/guid.blob -Destination ./Tournament -Recurse
+Copy-Item ./ETH_GO_CLIENT/accounts.txt -Destination ./Tournament/datadir -Recurse
+Copy-Item ./ETH_GO_CLIENT/contracts.txt -Destination ./Tournament/datadir -Recurse
+Copy-Item ./ETH_GO_CLIENT/guid.blob -Destination ./Tournament/datadir -Recurse
 
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"
