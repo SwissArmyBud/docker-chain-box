@@ -18,8 +18,8 @@ if(Test-Path ./Tournament){
   Remove-Item  -Recurse -Path ./Tournament
 }
 New-Item -ItemType directory -Path ./Tournament
-New-Item -ItemType directory -Path ./Tournament/Images
-New-Item -ItemType directory -Path ./Tournament/Scripts
+New-Item -ItemType directory -Path ./Tournament/images
+New-Item -ItemType directory -Path ./Tournament/scripts
 
 # Build and export images for each project
 foreach($PROJECT in $DOCKER_PROJECTS) {
@@ -47,7 +47,7 @@ foreach($PROJECT in $DOCKER_PROJECTS) {
 
 # Output the image for stack
   echo "[INFO] -> Starting image export for: $PROJECT"
-  docker save -o ./Tournament/Images/${PROJECT}.zip tournament/${PROJECT}:latest
+  docker save -o ./Tournament/images/${PROJECT}.zip tournament/${PROJECT}:latest
   ECHO ${NL}
 }
 
@@ -58,7 +58,7 @@ Set-Location -Path ${PSScriptRoot}
 # Move composer to build directory
 Copy-Item ./docker-compose.yaml -Destination ./Tournament
 # Move compose-time token loader to build
-Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament/Scripts
+Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament/scripts
 # Move runner to build
 Copy-Item ./Scripts/ProjectRunner.ps1 -Destination ./Tournament
 # Move chain to build

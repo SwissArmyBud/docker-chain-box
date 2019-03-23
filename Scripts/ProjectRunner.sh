@@ -3,13 +3,13 @@
 shScriptRoot=$( cd $( dirname ${BASH_SOURCE[0]} ) >/dev/null 2>&1 && pwd )
 
 # Load tokens
-source ${shScriptRoot}/Scripts/ComposeTokenLoader.ps1
+source ${shScriptRoot}/scripts/ComposeTokenLoader.sh
 echo
 
 # Get all images and import
-for IMAGE in "${shScriptRoot}/Images"/*
+for IMAGE in "${shScriptRoot}/images"/*
 do
-  $IEX_CMD = "docker load --input ${shScriptRoot}/Images/$IMAGE"
+  $IEX_CMD = "docker load --input ${shScriptRoot}/images/$IMAGE"
   echo "COMMAND -> $IEX_CMD"
   $IEX_CMD
 done

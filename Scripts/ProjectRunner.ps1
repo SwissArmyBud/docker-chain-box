@@ -4,13 +4,13 @@ $NL="`r`n"
 ECHO ${NL}
 
 # Load tokens
-. $PSScriptRoot/Scripts/ComposeTokenLoader.ps1
+. $PSScriptRoot/scripts/ComposeTokenLoader.ps1
 ECHO ${NL}
 
 # Get all images and import
-Get-ChildItem ./Images |
+Get-ChildItem ./images |
     ForEach-Object {
-        $IEX_CMD = "docker load --input $PSScriptRoot/Images/$_"
+        $IEX_CMD = "docker load --input $PSScriptRoot/images/$_"
         echo "COMMAND -> $IEX_CMD"
         iex $IEX_CMD
     }

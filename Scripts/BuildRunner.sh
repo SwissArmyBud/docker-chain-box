@@ -2,8 +2,9 @@
 # Create build directory
 rm -r -f ./Tournament 2>/dev/null
 mkdir ./Tournament
-mkdir ./Tournament/Images
-mkdir ./Tournament/Scripts
+mkdir ./Tournament/images
+mkdir ./Tournament/scripts
+
 
 # Build and export images for each project
 for PROJECT in $(find $(pwd)/Projects -maxdepth 1 -mindepth 1 -type d)
@@ -35,7 +36,7 @@ do
 
   # Output the image for stack
   echo "[INFO] -> Starting image export for: $PROJECT"
-  docker save -o ./Tournament/Images/${PROJECT}.zip tournament/${PROJECT}:latest
+  docker save -o ./Tournament/images/${PROJECT}.zip tournament/${PROJECT}:latest
   echo
 done
 
@@ -44,7 +45,7 @@ done
 # Move composer to build directory
 cp ${shScriptRoot}/docker-compose.yaml ${shScriptRoot}/Tournament
 # Move compose-time token loader to build
-cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/Scripts/
+cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/scripts
 # Move runner to build
 cp ${shScriptRoot}/Scripts/ProjectRunner.sh ${shScriptRoot}/Tournament
 # Move chain to build
