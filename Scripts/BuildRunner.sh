@@ -1,29 +1,26 @@
 
-# Grab current folder layout
-PROJECTS=""
-for PROJECT in $(find ${shScriptRoot} -type d)
-do
-  PROJECTS="$PROJECTS $(echo $PROJECT | grep -Po "\./\K.*")"
-done
-
-DOCKER_PROJECTS=""
-for FOLDER in $PROJECTS
-do
-  if [[ "$FOLDER" = "Tournaments" ]] || [[ "$FOLDER" = "Images" ]]; then
-    # Ignore
-    echo
-  else
-    DOCKER_PROJECTS="$DOCKER_PROJECTS $FOLDER"
-  fi
-done
-echo "Building the following projects: $DOCKER_PROJECTS"
-echo ${NL}
-
 # Create build directory
 rm -r -f ./Tournament 2>/dev/null
 mkdir ./Tournament
 mkdir ./Tournament/Images
 mkdir ./Tournament/Scripts
+
+echo "Building the following projects:"
+DOCKER_PROJECTS=""
+for FOLDER in $(find ${shScriptRoot} -type d)
+do
+  echo $FOLDER
+  PROJECT=$(echo $FOLDER | grep -Po "\./\K.*")
+  echo "$PROJECT"
+  if [[ "$PROJECT" = "Scripts" ]]; then
+    # Ignore
+    echo
+  else
+    DOCKER_PROJECTS="$PROJECT $DOCKER_PROJECTS"
+  fi
+done
+echo $DOCKER_PROJECTS
+
 
 # Build and export images for each project
 for PROJECT in $DOCKER_PROJECTS
