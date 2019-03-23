@@ -36,7 +36,7 @@ source ${shScriptRoot}/Scripts/BuildTokenLoader.sh
 echo $BUILD_EXPORT_VAR
 echo
 
-if [ -v $CHAIN_TYPE ]; then
+if [[ -v $CHAIN_TYPE ]]; then
   echo "[CRIT] -> Failed to specify chain action, exiting!"
   exit 1
 else
@@ -46,16 +46,18 @@ else
       echo "[INFO] -> Chain has $SIGNERS signers..."
       echo "[INFO] -> Chain has $FUNDERS funders..."
       echo "[INFO] -> Chain has $OWNERS owners..."
+
       # Run chain init
       source ${shScriptRoot}/Scripts/InitChain.sh
-      CONTRACT_COUNT=0
-      if [ -v $CONTRACTS ]; then
+
+      if [[ -v $CONTRACTS ]]; then
         # Leave contract count alone if no contract value
+        CONTRACT_COUNT=0
       else
         CONTRACT_COUNT=$(( $(echo $CONTRACTS | grep -o "," | wc -l) + 1 ))
       fi
       # Migrate contracts if needed
-      if [ $CONTRACT_COUNT -gt 0 ]; then
+      if [[ $CONTRACT_COUNT -gt 0 ]]; then
         echo "[INFO] -> Chain has $CONTRACT_COUNT contracts..."
         source ${shScriptRoot}/Scripts/MigrateChain.sh
       fi

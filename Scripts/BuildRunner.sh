@@ -11,6 +11,7 @@ for FOLDER in $PROJECTS
 do
   if [[ "$FOLDER" = "Tournaments" ]] || [[ "$FOLDER" = "Images" ]]; then
     # Ignore
+    echo
   else
     DOCKER_PROJECTS="$DOCKER_PROJECTS $FOLDER"
   fi
