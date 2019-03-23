@@ -1,5 +1,5 @@
 
-CLIENT_PATH="${shScriptRoot}/ETH_GO_CLIENT"
+CLIENT_PATH="${shScriptRoot}/Projects/ETH_GO_CLIENT"
 
 # Clean up client path
 rm -r -f "${CLIENT_PATH}/datadir"

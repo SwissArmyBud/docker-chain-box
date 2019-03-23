@@ -5,33 +5,16 @@ mkdir ./Tournament
 mkdir ./Tournament/Images
 mkdir ./Tournament/Scripts
 
-echo "Building the following projects:"
-DOCKER_PROJECTS=""
-cd ${shScriptRoot}/Projects
-for FOLDER in $(find $(pwd) -type d)
-do
-  echo $FOLDER
-  PROJECT=$(echo $FOLDER | grep -Po "\./\K.*")
-  echo "$PROJECT"
-  if [[ "$PROJECT" = "Scripts" ]]; then
-    # Ignore
-    echo
-  else
-    DOCKER_PROJECTS="$PROJECT $DOCKER_PROJECTS"
-  fi
-done
-echo $DOCKER_PROJECTS
-
-
 # Build and export images for each project
-for PROJECT in $DOCKER_PROJECTS
+for PROJECT in $(find $(pwd)/Projects -maxdepth 1 -mindepth 1 -type d)
 do
   # Alert and move into project
   echo "[INFO] -> Starting project: $PROJECT"
-  cd ${shScriptRoot}/$PROJECT
+  cd $PROJECT
   echo
 
   # Build new image for stack
+  PROJECT=$(basename $PROJECT)
   $BUILD_STRING = "docker build -t tournament/${PROJECT}:latest ."
   ls ./DockerArgs 1>/dev/null 2>&1
   if [ $? -ne 0 ]; then
@@ -55,8 +38,6 @@ do
   docker save -o ./Tournament/Images/${PROJECT}.zip tournament/${PROJECT}:latest
   echo
 done
-
-cd ${shScriptRoot}
 
 # Todo - Split this off into a project-manageable section for decoupling
 # Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
