@@ -8,7 +8,7 @@ var net = require('net');
 var Web3 = require('web3')
 var web3;
 
-var gethDir = process.cwd() + "/ETH_GO_CLIENT";
+var gethDir = process.cwd() + "/Projects/ETH_GO_CLIENT";
 
 // Get the genesis file and see how many signers are included
 var rocketship = JSON.parse(fs.readFileSync(gethDir + "/genesis.json"));
