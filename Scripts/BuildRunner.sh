@@ -67,7 +67,7 @@ cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/Scri
 # Move runner to build
 cp ${shScriptRoot}/Scripts/ProjectRunner.sh ${shScriptRoot}/Tournament
 # Move chain to build
-cp ${shScriptRoot}/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
+cp -r ${shScriptRoot}/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
 # Move chain read-outs to build
 cp ${shScriptRoot}/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
@@ -75,7 +75,7 @@ cp ${shScriptRoot}/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
 
 # Push project into zip file
 tar -zcf ${shScriptRoot}/Tournament.zip ${shScriptRoot}/Tournament
-rm -r -f ${shScriptRoot}/Tournament
+# rm -r -f ${shScriptRoot}/Tournament
 
 # Alert and process
 echo "[INFO] -> (NOT) Cleaning up project: $PROJECT"
