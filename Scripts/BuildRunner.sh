@@ -17,7 +17,7 @@ do
   PROJECT=$(echo $(basename $PROJECT) | tr '[:upper:]' '[:lower:]')
   BUILD_STRING="docker build -t tournament/${PROJECT}:latest ."
   ls ./DockerArgs 1>/dev/null 2>&1
-  if [ $? -ne 0 ]; then
+  if [ $? -eq 0 ]; then
     for LINE in $(grep ".*" ./DockerArgs)
     do
       $BUILD_STRING = "$BUILD_STRING --build-arg $LINE"
