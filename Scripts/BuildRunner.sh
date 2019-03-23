@@ -7,7 +7,8 @@ mkdir ./Tournament/Scripts
 
 echo "Building the following projects:"
 DOCKER_PROJECTS=""
-for FOLDER in $(find ${shScriptRoot} -type d)
+cd ${shScriptRoot}/Projects
+for FOLDER in $(find $(pwd) -type d)
 do
   echo $FOLDER
   PROJECT=$(echo $FOLDER | grep -Po "\./\K.*")
@@ -55,6 +56,8 @@ do
   echo
 done
 
+cd ${shScriptRoot}
+
 # Todo - Split this off into a project-manageable section for decoupling
 # Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
 # Move composer to build directory
@@ -64,11 +67,11 @@ cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/Scri
 # Move runner to build
 cp ${shScriptRoot}/Scripts/ProjectRunner.sh ${shScriptRoot}/Tournament
 # Move chain to build
-cp -r ${shScriptRoot}/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
+cp -r ${shScriptRoot}/Projects/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
 # Move chain read-outs to build
-cp ${shScriptRoot}/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournament
-cp ${shScriptRoot}/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
-cp ${shScriptRoot}/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
 
 # Push project into zip file
 tar -zcf ${shScriptRoot}/Tournament.zip ${shScriptRoot}/Tournament

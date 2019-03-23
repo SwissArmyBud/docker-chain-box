@@ -1,20 +1,15 @@
 
-# See:
-# https://stackoverflow.com/a/43351197
-if(!$PSScriptRoot){ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent }
 ECHO $PSScriptRoot
 
 # Setup rigs
 $NL="`r`n"
 ECHO ${NL}
 
+# Move into Projects folder
+Set-Location -Path ${PSScriptRoot}/Projects
+
 # Grab current folder layout
-$DOCKER_PROJECTS = Get-ChildItem -dir |
-  ForEach-Object { if( ($_.Name -ne "Tournament") -and
-                       ($_.Name -ne "Scripts")    ){
-                        $_.Name.ToLower()
-                      }
-                  }
+$DOCKER_PROJECTS = Get-ChildItem -dir | ForEach-Object { $_.Name.ToLower() }
 ECHO "Building the following projects: $DOCKER_PROJECTS"
 ECHO ${NL}
 
@@ -56,6 +51,8 @@ foreach($PROJECT in $DOCKER_PROJECTS) {
   ECHO ${NL}
 }
 
+Set-Location -Path ${PSScriptRoot}
+
 # Todo - Split this off into a project-manageable section for decoupling
 # Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
 # Move composer to build directory
@@ -65,11 +62,11 @@ Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament/Scripts
 # Move runner to build
 Copy-Item ./Scripts/ProjectRunner.ps1 -Destination ./Tournament
 # Move chain to build
-Copy-Item ./ETH_GO_CLIENT/datadir -Destination ./Tournament/datadir -Recurse
+Copy-Item ./Projects/ETH_GO_CLIENT/datadir -Destination ./Tournament/datadir -Recurse
 # Move chain read-outs to build
-Copy-Item ./ETH_GO_CLIENT/accounts.txt -Destination ./Tournament/datadir -Recurse
-Copy-Item ./ETH_GO_CLIENT/contracts.txt -Destination ./Tournament/datadir -Recurse
-Copy-Item ./ETH_GO_CLIENT/guid.blob -Destination ./Tournament/datadir -Recurse
+Copy-Item ./Projects/ETH_GO_CLIENT/accounts.txt -Destination ./Tournament -Recurse
+Copy-Item ./Projects/ETH_GO_CLIENT/contracts.txt -Destination ./Tournament -Recurse
+Copy-Item ./Projects/ETH_GO_CLIENT/guid.blob -Destination ./Tournament -Recurse
 
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"
