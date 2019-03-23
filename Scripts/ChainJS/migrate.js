@@ -70,11 +70,14 @@ var signerProcessStarted = function(){
   signerProcessCount++;
   clearTimeout(signerTimer);
   signerTimer = setTimeout( () => {
-      web3 = new Web3('//./pipe/geth.ipc', net);
-      // TODO - Set up a block watcher and trigger on ex. block #5
-      //        This would allow for parsed migrations as well
-      setTimeout(unlockOwners, 2000);
-  }, 3000);
+    var ipcPath = ( process.platform === "win32" ) ?
+                    '//./pipe/geth.ipc' :
+                    gethDir + "/datadir/geth.ipc";
+    web3 = new Web3(ipcPath, net);
+    // TODO - Set up a block watcher and trigger on ex. block #5
+    //        This would allow for parsed migrations as well
+    setTimeout(unlockOwners, 2000);
+  }, 2000);
 };
 var signerProcessExited = function(){
   signerProcessCount--;
