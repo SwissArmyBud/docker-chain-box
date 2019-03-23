@@ -16,7 +16,7 @@ touch "${CLIENT_PATH}/accounts.txt"
 TOTAL=$(( $SIGNERS + $FUNDERS + $OWNERS ))
 PREFIX="SIGNER"
 KEY=0
-for I in {1..$TOTAL}
+for (( I=1; I<=$TOTAL; I++ ))
 do
   KEY=$I
   if [[ $I -gt $SIGNERS ]]; then
@@ -31,8 +31,7 @@ do
   echo "$PREFIX - #$KEY"
   # Create account with key, and rename for purpose
   geth --datadir "${CLIENT_PATH}/datadir" account new --password "${CLIENT_PATH}/guid.blob"
-  sleep .5
-  mv "${CLIENT_PATH}/datadir/keystore/UTC*" "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob"
+  mv ${CLIENT_PATH}/datadir/keystore/UTC* "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob"
   # Log the new account to a readable format for the users
   echo "$PREFIX - #$KEY" >> "${CLIENT_PATH}/accounts.txt"
   echo "@{address=$(grep -Po '"address":"\K.*?(?=")' "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob")}" >> "${CLIENT_PATH}/accounts.txt"
@@ -41,9 +40,9 @@ done
 echo
 
 # TODO - Build appropriate genesis.json file
-echp "[INFO] -> Generating genesis JSON for new chain..."
-echp
-node "${CLIENT_PATH}/Scripts/ChainJS/genesis.js" $SIGNERS $FUNDERS
+echo "[INFO] -> Generating genesis JSON for new chain..."
+echo
+node "${shScriptRoot}/Scripts/ChainJS/genesis.js" $SIGNERS $FUNDERS
 echo
 
 # Re-create chain from JSON

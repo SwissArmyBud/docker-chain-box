@@ -63,9 +63,9 @@ done
 # Move composer to build directory
 cp ${shScriptRoot}/docker-compose.yaml ${shScriptRoot}/Tournament
 # Move compose-time token loader to build
-cp ${shScriptRoot}/Scripts/ComposeTokenLoader.ps1 ${shScriptRoot}/Tournament/Scripts/
+cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/Scripts/
 # Move runner to build
-cp ${shScriptRoot}/Scripts/ProjectRunner.ps1 ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Scripts/ProjectRunner.sh ${shScriptRoot}/Tournament
 # Move chain to build
 cp ${shScriptRoot}/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
 # Move chain read-outs to build
