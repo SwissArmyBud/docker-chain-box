@@ -14,7 +14,7 @@ do
   echo
 
   # Build new image for stack
-  PROJECT=$(basename $PROJECT)
+  PROJECT=$(echo $(basename $PROJECT) | tr '[:upper:]' '[:lower:]')
   BUILD_STRING="docker build -t tournament/${PROJECT}:latest ."
   ls ./DockerArgs 1>/dev/null 2>&1
   if [ $? -ne 0 ]; then
