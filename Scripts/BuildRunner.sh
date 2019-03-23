@@ -15,7 +15,7 @@ do
 
   # Build new image for stack
   PROJECT=$(basename $PROJECT)
-  $BUILD_STRING = "docker build -t tournament/${PROJECT}:latest ."
+  BUILD_STRING="docker build -t tournament/${PROJECT}:latest ."
   ls ./DockerArgs 1>/dev/null 2>&1
   if [ $? -ne 0 ]; then
     for LINE in $(grep ".*" ./DockerArgs)

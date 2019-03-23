@@ -9,7 +9,7 @@ var rocketship = JSON.parse(fs.readFileSync(__dirname + "/rocketship.json"));
 var signerCount = process.argv[2];
 var funderCount = process.argv[3];
 
-var keystore = process.cwd() + "/ETH_GO_CLIENT/datadir/keystore";
+var keystore = process.cwd() + "/Projects/ETH_GO_CLIENT/datadir/keystore";
 
 var signerList = [];
 var funderList = [];
@@ -49,7 +49,7 @@ funderList.forEach((funder)=>{
 });
 console.log("");
 var jsonOutput = JSON.stringify(rocketship);
-fs.writeFileSync(process.cwd() + "/ETH_GO_CLIENT/genesis.json", jsonOutput);
+fs.writeFileSync(process.cwd() + "/Projects/ETH_GO_CLIENT/genesis.json", jsonOutput);
 console.log("[GEN] -> Wrote out config with MD5: " + crypto.createHash('md5')
                                                   .update(jsonOutput)
                                                   .digest("hex"));
