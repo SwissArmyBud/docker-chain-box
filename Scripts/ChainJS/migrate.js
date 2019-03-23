@@ -103,7 +103,7 @@ var startSigners = function(){
     var datadir = gethDir + "/datadir";
     let childArgs = [ "--unlock", signerList[i],
                       "--etherbase", signerList[i],
-                      "--password", "./ETH_GO_CLIENT/guid.blob",
+                      "--password", gethDir + "/guid.blob",
                       "--mine",
                       "--targetgaslimit", "10000000"
                     ];
