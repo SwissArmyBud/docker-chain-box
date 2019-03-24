@@ -1,6 +1,7 @@
 
 echo "[INFO] -> Migrating contracts onto new chain..."
 # Use Web3 to migrate
+EXIT_CODE=0
 for (( I=1; I<=3; I++ ))
 do
   node ${shScriptRoot}/Scripts/ChainJS/migrate.js $CONTRACTS
@@ -16,5 +17,5 @@ done
 echo
 if [ $EXIT_CODE -ne 0 ]; then
   echo "[INFO] -> Migration failed after restart attempts!"
-  exit($EXIT_CODE)
+  exit $EXIT_CODE
 fi
