@@ -107,8 +107,7 @@ var startSigners = function(){
                       "--etherbase", signerList[i],
                       "--password", gethDir + "/guid.blob",
                       "--mine",
-                      "--targetgaslimit", "10000000",
-                      "--cache", "512"
+                      "--targetgaslimit", "10000000"
                     ];
     if( i == 0 ){
       // Tasks when node is first signer (MASTER)
