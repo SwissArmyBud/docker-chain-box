@@ -90,6 +90,7 @@ var signerProcessExited = function(){
     if(!migrationsComplete){
       process.exit(1);
     }
+    process.exit(0);
     // Do other stuff here once all the signers are closed
     // signersExited = true;
   }
