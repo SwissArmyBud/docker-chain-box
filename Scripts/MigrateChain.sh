@@ -14,3 +14,7 @@ do
   fi
 done
 echo
+if [ $EXIT_CODE -ne 0 ]; then
+  echo "[INFO] -> Migration failed after restart attempts!"
+  exit($EXIT_CODE)
+fi
