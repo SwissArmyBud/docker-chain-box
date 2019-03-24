@@ -8,6 +8,8 @@ do
   EXIT_CODE=$?
   if [ $EXIT_CODE -eq 0 ]; then
     I=4
+  else
+    sleep 1
   fi
 done
 echo

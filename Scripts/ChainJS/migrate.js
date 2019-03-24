@@ -51,8 +51,10 @@ var unlockOwners = function(){
 }
 
 // Called when migrations are finished being deployed
+var migrationsComplete = false;
 var migrationsFinished = function(){
   console.log("[JS] -> Finished with migrations...");
+  migrationsComplete = true;
   processList.forEach( (process) => process.kill());
   // NOTE - This is the run-out area of the script currently,
   // use this to call the next chained function if needed
@@ -85,6 +87,9 @@ var signerProcessExited = function(){
   signerProcessCount--;
   if(!signerProcessCount){
     console.log("[JS] -> All signers exited...");
+    if(!migrationsComplete){
+      process.exit(1);
+    }
     // Do other stuff here once all the signers are closed
     // signersExited = true;
   }
@@ -179,43 +184,50 @@ var contractMigrator = async function() {
       contractOutput += contract.contractName + " - #" + (i+1);
       contractOutput += "\n";
       let web3Contract = new web3.eth.Contract( contract.abi );
-      let receipt = await web3Contract.deploy({ data: contract.bytecode })
-                                      .send({
-                                        from: "0x" + ownerList[0],
-                                        gasPrice: web3.utils.toHex(0),
-                                        gas: web3.utils.toHex(9500000)
-                                      }).on('transactionHash', (tx) => {
-                                         console.log("[DEPLOY] -> Tx Hash: " + tx)
-                                      }).catch(e => {
-                                        // TODO - Remove all of this when Web3
-                                        // is fixed for transaction receipts
-                                        if(e.toString().indexOf("reverted by the EVM:") == -1){
-                                          console.log("Critical error!");
-                                          console.log(e);
-                                          // Unknown error, return undefined
-                                          return undefined;
-                                        } else {
-                                          var er = e.toString();
-                                          try{
-                                            er = JSON.parse(er.substr(er.indexOf("EVM:") + 4, er.indexOf("}") - 3).trim());
-                                            if(er.status){
-                                                console.log("[DEPLOY] -> Receipt ok...");
-                                            } else { console.log("[DEPLOY] -> Receipt status not ok!"); }
-                                          } catch (error) {
-                                            console.log("[DEPLOY] -> WARNING - WEB3 REPORTS EVM ROLLBACK, BAD RECEIPT PARSE...");
-                                            console.log(er);
-                                            // Our error parsing has failed - no guaranteed state, return undefined
+      try{
+        let receipt = await web3Contract.deploy({ data: contract.bytecode })
+                                        .send({
+                                          from: "0x" + ownerList[0],
+                                          gasPrice: web3.utils.toHex(0),
+                                          gas: web3.utils.toHex(9500000)
+                                        }).on('transactionHash', (tx) => {
+                                           console.log("[DEPLOY] -> Tx Hash: " + tx)
+                                        }).catch(e => {
+                                          // TODO - Remove all of this when Web3
+                                          // is fixed for transaction receipts
+                                          if(e.toString().indexOf("reverted by the EVM:") == -1){
+                                            console.log("Critical error!");
+                                            console.log(e);
+                                            // Unknown error, return undefined
                                             return undefined;
+                                          } else {
+                                            var er = e.toString();
+                                            try{
+                                              er = JSON.parse(er.substr(er.indexOf("EVM:") + 4, er.indexOf("}") - 3).trim());
+                                              if(er.status){
+                                                  console.log("[DEPLOY] -> Receipt ok...");
+                                              } else { console.log("[DEPLOY] -> Receipt status not ok!"); }
+                                            } catch (error) {
+                                              console.log("[DEPLOY] -> WARNING - WEB3 REPORTS EVM ROLLBACK, BAD RECEIPT PARSE...");
+                                              console.log(er);
+                                              // Our error parsing has failed - no guaranteed state, return undefined
+                                              return undefined;
+                                            }
+                                            return er;
                                           }
-                                          return er;
-                                        }
-                                      });
-      if(receipt){
-        console.log("[DEPLOY] -> Deployed to: " + receipt.contractAddress);
-        contractOutput += "@{address=" + receipt.contractAddress.substr(2) + "}";
-        contractOutput += "\n\n";
-      } else {
-        console.log("[DEPLOY] -> Failed to deploy contract!");
+                                        });
+        if(receipt){
+          console.log("[DEPLOY] -> Deployed to: " + receipt.contractAddress);
+          contractOutput += "@{address=" + receipt.contractAddress.substr(2) + "}";
+          contractOutput += "\n\n";
+        } else {
+          console.log("[DEPLOY] -> Failed to deploy contract!");
+        }
+      } catch(e){
+        console.log("Migrate error:");
+        console.log(e);
+        deploymentFinished--;
+        i--;
       }
       console.log("");
       deploymentsFinished++;
