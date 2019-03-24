@@ -1,13 +1,13 @@
 
 # Create build directory
-rm -r -f ./Tournament 2>/dev/null
-mkdir ./Tournament
-mkdir ./Tournament/images
-mkdir ./Tournament/scripts
+rm -r -f ${shScriptRoot}/Tournament 2>/dev/null
+mkdir ${shScriptRoot}/Tournament
+mkdir ${shScriptRoot}/Tournament/images
+mkdir ${shScriptRoot}/Tournament/scripts
 
 
 # Build and export images for each project
-for PROJECT in $(find $(pwd)/Projects -maxdepth 1 -mindepth 1 -type d)
+for PROJECT in $(find ${shScriptRoot}/Projects -maxdepth 1 -mindepth 1 -type d)
 do
   # Alert and move into project
   echo "[INFO] -> Starting project: $PROJECT"
@@ -36,7 +36,7 @@ do
 
   # Output the image for stack
   echo "[INFO] -> Starting image export for: $PROJECT"
-  docker save -o ./Tournament/images/${PROJECT}.zip tournament/${PROJECT}:latest
+  docker save -o ${shScriptRoot}/Tournament/images/${PROJECT}.zip tournament/${PROJECT}:latest
   echo
 done
 

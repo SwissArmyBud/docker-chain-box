@@ -108,7 +108,7 @@ var startSigners = function(){
                       "--password", gethDir + "/guid.blob",
                       "--mine",
                       "--targetgaslimit", "10000000",
-                      "--cache", "2048"
+                      "--cache", "512"
                     ];
     if( i == 0 ){
       // Tasks when node is first signer (MASTER)
