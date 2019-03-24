@@ -31,6 +31,7 @@ var keyBlob = fs.readFileSync(gethDir + "/guid.blob").toString().trim();
 var accountsKeyed = 0;
 var unlockOwners = function(){
   ownerList.forEach( async (owner) => {
+    console.log("");
     console.log("[JS] -> Trying to unlock: " + owner);
     var ok = await web3.eth.personal.unlockAccount("0x" + owner, keyBlob, 600);
     if(ok) {
@@ -42,6 +43,7 @@ var unlockOwners = function(){
     if(accountsKeyed = ownerList.length){
       // TODO - Gather/gauge error here and proceed
       // NOW - Just proceed since we should have one unlocked account
+      console.log("");
       console.log("[JS] -> Starting migrations with owners unlocked...");
       contractMigrator();
     }
@@ -105,7 +107,8 @@ var startSigners = function(){
                       "--etherbase", signerList[i],
                       "--password", gethDir + "/guid.blob",
                       "--mine",
-                      "--targetgaslimit", "10000000"
+                      "--targetgaslimit", "10000000",
+                      "--cache", "2048"
                     ];
     if( i == 0 ){
       // Tasks when node is first signer (MASTER)
