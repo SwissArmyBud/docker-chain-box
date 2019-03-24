@@ -5,7 +5,6 @@ mkdir ${shScriptRoot}/Tournament
 mkdir ${shScriptRoot}/Tournament/images
 mkdir ${shScriptRoot}/Tournament/scripts
 
-
 # Build and export images for each project
 for PROJECT in $(find ${shScriptRoot}/Projects -maxdepth 1 -mindepth 1 -type d)
 do
@@ -21,7 +20,7 @@ do
   if [ $? -eq 0 ]; then
     for LINE in $(grep ".*" ./DockerArgs)
     do
-      $BUILD_STRING = "$BUILD_STRING --build-arg $LINE"
+      BUILD_STRING="$BUILD_STRING --build-arg $LINE"
     done
   fi
   echo "[INFO] -> Starting docker build for: $PROJECT"
