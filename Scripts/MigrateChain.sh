@@ -1,21 +1,30 @@
 
 echo "[INFO] -> Migrating contracts onto new chain..."
 # Use Web3 to migrate
-EXIT_CODE=0
-for (( I=1; I<=3; I++ ))
-do
-  node ${shScriptRoot}/Scripts/ChainJS/migrate.js $CONTRACTS
-  EXIT_CODE=$?
-  echo "[INFO] -> Migration exit code is: $EXIT_CODE"
-  if [ $EXIT_CODE -eq 0 ]; then
-    I=4
-  else
-    sleep 5
-    rm ${shScriptRoot}/Projects/ETH_GO_CLIENT/datadir/geth.ipc
-  fi
-done
-echo
-if [ $EXIT_CODE -ne 0 ]; then
-  echo "[INFO] -> Migration failed after restart attempts!"
-  exit $EXIT_CODE
-fi
+node ${shScriptRoot}/Scripts/ChainJS/migrate.js $CONTRACTS
+
+# MUST FIX WEB3
+# /node_modules/web3/node_modules/web3-providers/dist/web3-providers.cjs.js
+# SEE CHANGES BELOW
+# onMessage(response) {
+#         let event;
+#
+#         if (!isObject(response)) {
+#             // CHANGE THIS
+#             response = JSON.parse(response);
+#             // TO THIS
+#             response = JSON.parse(response.split("\n")[0]);
+#         }
+#
+#         if (isArray(response)) {
+#             event = response[0].id;
+#         } else if (typeof response.id === 'undefined') {
+#             event = this.getSubscriptionEvent(response.params.subscription);
+#             response = response.params;
+#         } else {
+#             event = response.id;
+#         }
+#
+#         this.emit(this.SOCKET_MESSAGE, response);
+#         this.emit(event, response);
+# }
