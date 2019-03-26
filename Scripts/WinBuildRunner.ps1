@@ -14,8 +14,11 @@ ECHO "Building the following projects: $DOCKER_PROJECTS"
 ECHO ${NL}
 
 # Create build directory
-if(Test-Path ./Tournament){
-  Remove-Item  -Recurse -Path ./Tournament
+if(Test-Path ${PSScriptRoot}/Tournament){
+  Remove-Item -Recurse -Path ${PSScriptRoot}/Tournament
+}
+if(Test-Path ${PSScriptRoot}/Tournament.zip){
+  Remove-Item ${PSScriptRoot}/Tournament.zip
 }
 New-Item -ItemType directory -Path ./Tournament
 New-Item -ItemType directory -Path ./Tournament/images

@@ -1,6 +1,7 @@
 
 # Create build directory
 rm -r -f ${shScriptRoot}/Tournament 2>/dev/null
+rm -f ${shScriptRoot}/Tournament.zip 2>/dev/null
 mkdir ${shScriptRoot}/Tournament
 mkdir ${shScriptRoot}/Tournament/images
 mkdir ${shScriptRoot}/Tournament/scripts
