@@ -60,7 +60,7 @@ Copy-Item ./docker-compose.yaml -Destination ./Tournament
 # Move compose-time token loader to build
 Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament/scripts
 # Move runner to build
-Copy-Item ./Scripts/ProjectRunner.ps1 -Destination ./Tournament
+Copy-Item ./Scripts/ChainRunner.exe -Destination ./Tournament
 # Move chain to build
 Copy-Item ./Projects/ETH_GO_CLIENT/datadir -Destination ./Tournament/datadir -Recurse
 # Move chain read-outs to build
