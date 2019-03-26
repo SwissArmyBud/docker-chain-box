@@ -59,7 +59,7 @@ cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
 cp -r ${shScriptRoot}/Scripts/Electron/* ${shScriptRoot}/Tournament/electron
 
 # Push project into zip file
-tar -zcf ${shScriptRoot}/Tournament.zip ${shScriptRoot}/Tournament
+zip -r ${shScriptRoot}/Tournament.zip ${shScriptRoot}/Tournament/*
 # rm -r -f ${shScriptRoot}/Tournament
 
 # Alert and process
