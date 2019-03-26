@@ -20,6 +20,7 @@ if(Test-Path ./Tournament){
 New-Item -ItemType directory -Path ./Tournament
 New-Item -ItemType directory -Path ./Tournament/images
 New-Item -ItemType directory -Path ./Tournament/scripts
+New-Item -ItemType directory -Path ./Tournament/electron
 
 # Build and export images for each project
 foreach($PROJECT in $DOCKER_PROJECTS) {
@@ -56,17 +57,20 @@ Set-Location -Path ${PSScriptRoot}
 # Todo - Split this off into a project-manageable section for decoupling
 # Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
 # Move composer to build directory
-Copy-Item ./docker-compose.yaml -Destination ./Tournament
+Copy-Item ${PSScriptRoot}/docker-compose.yaml -Destination ${PSScriptRoot}/Tournament
 # Move compose-time token loader to build
-Copy-Item ./Scripts/ComposeTokenLoader.ps1 -Destination ./Tournament/scripts
-# Move runner to build
-Copy-Item ./Scripts/ChainRunner.exe -Destination ./Tournament
+Copy-Item ${PSScriptRoot}/Scripts/ComposeTokenLoader.ps1 -Destination ${PSScriptRoot}/Tournament/scripts
+# Move runners to build
+Copy-Item ${PSScriptRoot}/Scripts/ChainRunner.exe -Destination ${PSScriptRoot}/Tournament
+Copy-Item ${PSScriptRoot}/Scripts/TournamentRunner.exe -Destination ${PSScriptRoot}/Tournament
 # Move chain to build
-Copy-Item ./Projects/ETH_GO_CLIENT/datadir -Destination ./Tournament/datadir -Recurse
+Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/datadir -Destination ${PSScriptRoot}/Tournament/datadir -Recurse
 # Move chain read-outs to build
-Copy-Item ./Projects/ETH_GO_CLIENT/accounts.txt -Destination ./Tournament -Recurse
-Copy-Item ./Projects/ETH_GO_CLIENT/contracts.txt -Destination ./Tournament -Recurse
-Copy-Item ./Projects/ETH_GO_CLIENT/guid.blob -Destination ./Tournament -Recurse
+Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt -Destination ${PSScriptRoot}/Tournament -Recurse
+Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt -Destination ${PSScriptRoot}/Tournament -Recurse
+Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob -Destination ${PSScriptRoot}/Tournament -Recurse
+# Move electron build to build
+Copy-Item ${PSScriptRoot}/Scripts/Electron -Destination ${PSScriptRoot}/Tournament/electron -Recurse
 
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"

@@ -4,6 +4,7 @@ rm -r -f ${shScriptRoot}/Tournament 2>/dev/null
 mkdir ${shScriptRoot}/Tournament
 mkdir ${shScriptRoot}/Tournament/images
 mkdir ${shScriptRoot}/Tournament/scripts
+mkdir ${shScriptRoot}/Tournament/electron
 
 # Build and export images for each project
 for PROJECT in $(find ${shScriptRoot}/Projects -maxdepth 1 -mindepth 1 -type d)
@@ -45,14 +46,17 @@ done
 cp ${shScriptRoot}/docker-compose.yaml ${shScriptRoot}/Tournament
 # Move compose-time token loader to build
 cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/scripts
-# Move runner to build
+# Move runners to build
 cp ${shScriptRoot}/Scripts/ChainRunner.exe ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Scripts/TournamentRunner.exe ${shScriptRoot}/Tournament
 # Move chain to build
 cp -r ${shScriptRoot}/Projects/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
 # Move chain read-outs to build
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
+# Move electron build to build
+cp -r ${shScriptRoot}/Scripts/Electron ${shScriptRoot}/Tournament/electron
 
 # Push project into zip file
 tar -zcf ${shScriptRoot}/Tournament.zip ${shScriptRoot}/Tournament

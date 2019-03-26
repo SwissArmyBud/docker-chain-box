@@ -1,0 +1,1 @@
+start-process powershell -ArgumentList "./electron/T-Runner.exe" -WindowStyle hidden
