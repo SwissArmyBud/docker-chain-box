@@ -25,7 +25,7 @@ RUN \
     echo "[INFO] -> Starting gEth..." \n\
     geth --nodekey /root/nodekey \
          --datadir /root/datadir \
-         --ethstats DockerNode-$((1000 + RANDOM % 9000)):socketsecret2@eth_net_front:3000  \
+         --ethstats DockerNode-$((1000 + RANDOM % 9000)):socketsecret2@eth_net_front:3010  \
          "$@"' \
     > ~/startup.sh &&\
     chmod +x ~/startup.sh

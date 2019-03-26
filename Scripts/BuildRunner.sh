@@ -43,6 +43,7 @@ done
 
 # Todo - Split this off into a project-manageable section for decoupling
 # Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
+echo "[INFO] -> Copying raw build files into directory..."
 # Move composer to build directory
 cp ${shScriptRoot}/docker-compose.yaml ${shScriptRoot}/Tournament
 # Move compose-time token loader to build
@@ -61,12 +62,15 @@ cp -r ${shScriptRoot}/Scripts/Electron/* ${shScriptRoot}/Tournament/electron
 
 # Push project into zip file
 cd ${shScriptRoot}/Tournament
-zip -r ${shScriptRoot}/Tournament.zip ./*
+echo "[INFO] -> Compressing build into zip file..."
+zip -r ${shScriptRoot}/Tournament.zip ./* 1>/dev/null
 cd ../
+
+echo "[INFO] -> (NOT) Cleaning up project..."
 # rm -r -f ${shScriptRoot}/Tournament
 
 # Alert and process
-echo "[INFO] -> (NOT) Cleaning up project: $PROJECT"
+echo "[INFO] -> (NOT) Cleaning up final docker images..."
 for PROJECT in $DOCKER_PROJECTS
 do
   # Cleanup all built images
