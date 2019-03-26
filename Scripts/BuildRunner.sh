@@ -56,7 +56,7 @@ cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournamen
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
 # Move electron build to build
-cp -r ${shScriptRoot}/Scripts/Electron ${shScriptRoot}/Tournament/electron
+cp -r ${shScriptRoot}/Scripts/Electron/* ${shScriptRoot}/Tournament/electron
 
 # Push project into zip file
 tar -zcf ${shScriptRoot}/Tournament.zip ${shScriptRoot}/Tournament

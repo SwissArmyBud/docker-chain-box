@@ -70,7 +70,7 @@ Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt -Destination ${PSS
 Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt -Destination ${PSScriptRoot}/Tournament -Recurse
 Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob -Destination ${PSScriptRoot}/Tournament -Recurse
 # Move electron build to build
-Copy-Item ${PSScriptRoot}/Scripts/Electron -Destination ${PSScriptRoot}/Tournament/electron -Recurse
+Copy-Item ${PSScriptRoot}/Scripts/Electron/* -Destination ${PSScriptRoot}/Tournament/electron -Recurse
 
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"
