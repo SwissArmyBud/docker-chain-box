@@ -66,6 +66,10 @@ echo "[INFO] -> Compressing build into zip file..."
 zip -r ${shScriptRoot}/Tournament.zip ./* 1>/dev/null
 cd ../
 
+# Create windows installer
+echo "[INFO] -> Creating windows installer (exe)..."
+makensis ${shScriptRoot}/installer.nsi
+
 echo "[INFO] -> (NOT) Cleaning up project..."
 # rm -r -f ${shScriptRoot}/Tournament
 
