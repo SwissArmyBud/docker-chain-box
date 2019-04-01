@@ -1,13 +1,13 @@
 version: '3'
 services:
 
-  geth_client_1:
+  geth_client:
     image: tournament/eth_go_client:latest
     restart: always
     networks:
       geth_back:
         aliases:
-          - eth_client_1
+          - geth_client
     ports:
       - "30300:30303"
       - "30300:30303/udp"
@@ -22,7 +22,17 @@ services:
         aliases:
           - eth_net_front
     ports:
-      - "3000:3000"
+      - "3010:3010"
+
+  apollo_booster:
+    image: tournament/apollo_booster:latest
+    restart: always
+    networks:
+      geth_back:
+        aliases:
+          - apollo_booster
+    ports:
+      - "8080:8080"
 
 networks:
   geth_back:

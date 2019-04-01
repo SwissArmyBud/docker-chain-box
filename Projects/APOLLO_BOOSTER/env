@@ -1,0 +1,4 @@
+GO_ENV="development"
+DB_CONN_INIT="postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable"
+DB_CONN="postgres://postgres:postgres@127.0.0.1:5432/tournament_booster?sslmode=disable"
+BEEGO_RUNMODE="prod"

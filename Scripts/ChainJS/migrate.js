@@ -69,6 +69,12 @@ var migrationsFinished = function(){
 var signerProcessCount = 0;
 var signerCliqueCount = parseInt((signerCount/2) + 1);
 var signerTimer;
+// Set some really shallow options since we're running a private network
+var rpcOptions = {
+    transactionBlockTimeout: 3,
+    transactionConfirmationBlocks: 1,
+    transactionPollingTimeout: 30
+};
 // Start enough processes to reach quorum, then start unlocking owners
 var signerProcessStarted = function(){
   signerProcessCount++;
@@ -77,7 +83,7 @@ var signerProcessStarted = function(){
     var ipcPath = ( process.platform === "win32" ) ?
                     '//./pipe/geth.ipc' :
                     gethDir + "/datadir/geth.ipc";
-    web3 = new Web3(ipcPath, net);
+    web3 = new Web3(ipcPath, net, rpcOptions);
     // TODO - Set up a block watcher and trigger on ex. block #5
     //        This would allow for parsed migrations as well
     setTimeout(unlockOwners, 2000);
@@ -87,12 +93,10 @@ var signerProcessExited = function(){
   signerProcessCount--;
   if(!signerProcessCount){
     console.log("[JS] -> All signers exited...");
-    if(!migrationsComplete){
-      process.exit(1);
+    if(migrationsComplete){
+      process.exit(0)
     }
-    process.exit(0);
-    // Do other stuff here once all the signers are closed
-    // signersExited = true;
+    process.exit(1);
   }
 };
 
@@ -115,6 +119,7 @@ var startSigners = function(){
                       "--mine",
                       "--targetgaslimit", "10000000"
                     ];
+
     if( i == 0 ){
       // Tasks when node is first signer (MASTER)
     } else {
@@ -129,14 +134,15 @@ var startSigners = function(){
 
       // Turn off IPC for node
       childArgs.push("--ipcdisable");
-      // Set a new listener (start at 30310 and increment by 2)
-      childArgs = childArgs.concat(["--port", (30310 + (2*i)).toString() ]);
 
       // Add the index to the datadir
       datadir += i;
     }
 
+    // Set datadir path
     childArgs = childArgs.concat(["--datadir", datadir]);
+    // Set a new listener (start at 30310 and increment by 2)
+    childArgs = childArgs.concat(["--port", (30310 + (2*i)).toString() ]);
 
     console.log("[JS] -> Starting signer with arguments:");
     console.log(childArgs);
@@ -185,51 +191,30 @@ var contractMigrator = async function() {
       contractOutput += contract.contractName + " - #" + (i+1);
       contractOutput += "\n";
       let web3Contract = new web3.eth.Contract( contract.abi );
-      try{
-        let receipt = await web3Contract.deploy({ data: contract.bytecode })
-                                        .send({
-                                          from: "0x" + ownerList[0],
-                                          gasPrice: web3.utils.toHex(0),
-                                          gas: web3.utils.toHex(9500000)
-                                        }).on('transactionHash', (tx) => {
-                                           console.log("[DEPLOY] -> Tx Hash: " + tx)
-                                        }).catch(e => {
-                                          // TODO - Remove all of this when Web3
-                                          // is fixed for transaction receipts
-                                          if(e.toString().indexOf("reverted by the EVM:") == -1){
-                                            console.log("Critical error!");
-                                            console.log(e);
-                                            // Unknown error, return undefined
-                                            return undefined;
-                                          } else {
-                                            var er = e.toString();
-                                            try{
-                                              er = JSON.parse(er.substr(er.indexOf("EVM:") + 4, er.indexOf("}") - 3).trim());
-                                              if(er.status){
-                                                  console.log("[DEPLOY] -> Receipt ok...");
-                                              } else { console.log("[DEPLOY] -> Receipt status not ok!"); }
-                                            } catch (error) {
-                                              console.log("[DEPLOY] -> WARNING - WEB3 REPORTS EVM ROLLBACK, BAD RECEIPT PARSE...");
-                                              console.log(er);
-                                              // Our error parsing has failed - no guaranteed state, return undefined
-                                              return undefined;
-                                            }
-                                            return er;
-                                          }
-                                        });
-        if(receipt){
-          console.log("[DEPLOY] -> Deployed to: " + receipt.contractAddress);
-          contractOutput += "@{address=" + receipt.contractAddress.substr(2) + "}";
-          contractOutput += "\n\n";
-        } else {
-          console.log("[DEPLOY] -> Failed to deploy contract!");
-        }
-      } catch(e){
-        console.log("Migrate error:");
-        console.log(e);
-        deploymentFinished--;
-        i--;
+
+      let abstractContract = await web3Contract.deploy({ data: contract.bytecode })
+                                               .send({
+                                                 from: "0x" + ownerList[0],
+                                                 gasPrice: web3.utils.toHex(0),
+                                                 gas: web3.utils.toHex(9500000)
+                                               }).on('transactionHash', (tx) => {
+                                                 console.log("[DEPLOY] -> Tx Hash: " + tx);
+                                               }).on('receipt', (rc) => {
+                                                 console.log("[DEPLOY] -> Receipt: ");
+                                                 console.log(rc);
+                                               }).catch( (er) => {
+                                                 console.log("[DEPLOY] -> Error reported: ");
+                                                 console.log(er);
+                                               });
+
+      if(abstractContract.options.address){
+        console.log("[DEPLOY] -> Deployed to: " + aContract.options.address);
+        contractOutput += "@{address=" + aContract.options.address.substr(2) + "}";
+        contractOutput += "\n\n";
+      } else {
+        console.log("[DEPLOY] -> Failed to deploy contract!");
       }
+
       console.log("");
       deploymentsFinished++;
       if(deploymentsFinished == artifactCount){

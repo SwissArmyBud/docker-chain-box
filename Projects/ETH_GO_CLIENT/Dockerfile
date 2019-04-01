@@ -1,32 +1,22 @@
 # Build Geth in a stock Go builder container
-FROM golang:1.11.4-stretch as builder
-RUN apt-get update -y &&\
-    apt-get install -y make gcc musl-dev linux-headers-amd64 &&\
-    git clone https://github.com/ethereum/go-ethereum ~/geth &&\
-    cd ~/geth &&\
-    make all && \
-    ls -l ./build/bin
-# Pull Geth into a second stage deploy container
-FROM debian:stretch
-RUN export DEBIAN_FRONTEND=noninteractive &&\
-    apt-get update -y &&\
-    apt-get install -y bzip2 ca-certificates curl git gnupg gzip locales mercurial net-tools netcat openssh-client parallel sudo tar unzip wget xvfb zip &&\
-    apt-get clean
-COPY --from=builder /root/geth/build/bin/* /usr/local/bin/
-ADD ./datadir /root/datadir
+FROM golang:1.12-alpine as builder
+COPY /geth /geth
 RUN \
-    echo \
-    '#!/bin/bash \n\
-    set -e \n\
-    if [ ! -f  /root/nodekey ] ; \n\
-      then \n\
-        bootnode -genkey /root/nodekey \n\
-    fi \n\
-    echo "[INFO] -> Starting gEth..." \n\
-    geth --nodekey /root/nodekey \
-         --datadir /root/datadir \
-         --ethstats DockerNode-$((1000 + RANDOM % 9000)):socketsecret2@eth_net_front:3010  \
-         "$@"' \
-    > ~/startup.sh &&\
-    chmod +x ~/startup.sh
-ENTRYPOINT ["/root/startup.sh"]
+    # Update Alpine and grab packages
+    echo "Update Alpine and grab packages..." &&\
+    apk update && apk upgrade &&\
+    apk add --no-cache make gcc musl-dev linux-headers git && rm -rf /var/cache/apk/* &&\
+    cd /geth &&\
+    make all &&\
+    mv /geth/build/bin/geth /usr/local/bin/ &&\
+    mv /geth/build/bin/bootnode /usr/local/bin/ &&\
+    echo "Go home and pack up application..." &&\
+    cd / && tar -czf bins.tar.gz /usr/local/bin
+# Pull Geth into a second stage deploy container
+FROM alpine:3.9
+COPY --from=builder bins.tar.gz /
+COPY startup.sh /
+ADD datadir /root/datadir
+
+ENTRYPOINT ["/bin/ash"]
+CMD ["/startup.sh"]
