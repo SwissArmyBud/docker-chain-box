@@ -1,6 +1,5 @@
 # Build Geth in a stock Go builder container
 FROM golang:1.12-alpine as builder
-
 COPY /apollo /usr/local/go/src/blockitrocket.com/git/apollo
 COPY env /usr/local/go/src/blockitrocket.com/git/apollo/env
 RUN \

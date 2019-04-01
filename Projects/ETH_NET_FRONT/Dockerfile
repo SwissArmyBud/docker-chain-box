@@ -1,12 +1,9 @@
 FROM node:10-alpine
+COPY /netstats /app
 RUN \
     # Update Alpine and grab packages
     echo "Update Alpine and grab packages..." &&\
-    apk update && apk upgrade && apk add git tar && rm -rf /var/cache/apk/* &&\
-    # Get application from Git
-    echo "Get application from Git..." &&\
-    mkdir /app &&\
-    git clone https://github.com/EthereumEx/eth-netstats.git /app &&\
+    apk update && apk upgrade && apk add tar && rm -rf /var/cache/apk/* &&\
     # Head into application and install deps, build, and clean up
     echo "Head into application and install deps, build, and clean up..." &&\
     cd /app &&\
