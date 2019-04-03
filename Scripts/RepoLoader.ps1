@@ -1,7 +1,7 @@
 
 if(!$PSScriptRoot){ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent }
 
-foreach( $FOLDER in $(Get-ChildItem -dir | ForEach-Object { $_.Name.ToLower() }) ) {
+foreach( $FOLDER in $(Get-ChildItem -dir "${PSScriptRoot}/Projects" | ForEach-Object { $_.Name.ToLower() }) ) {
   Remove-Variable GIT_COMMAND
   switch ($FOLDER){
     "apollo_booster" {
@@ -17,13 +17,13 @@ foreach( $FOLDER in $(Get-ChildItem -dir | ForEach-Object { $_.Name.ToLower() })
       break
     }
     default {
-      echo "Project has no git requirements to fulfill -$PROJECT"
+      echo "Project $PROJECT has no git requirements to fulfill..."
     }
   }
   if(!GIT_COMMAND){
-    Remove-Variable GIT_COMMAND
+    echo "Skipping..."
   } else {
-    echo "Fetching git requirements to fulfill -$PROJECT"
+    echo "Fetching git requirements to fulfill - $PROJECT"
     iex "git clone $GIT_COMMAND"
   }
   echo
