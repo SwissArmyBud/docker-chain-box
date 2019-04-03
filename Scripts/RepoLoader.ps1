@@ -1,5 +1,5 @@
 
-if(!$PSScriptRoot){ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent }
+if(!$PSScriptRoot){ $PSScriptRoot = $(Get-Location | Select -expandproperty Path) }
 
 foreach( $FOLDER in $(Get-ChildItem -dir "${PSScriptRoot}/Projects" | ForEach-Object { $_.Name.ToLower() }) ) {
   Remove-Variable GIT_COMMAND
