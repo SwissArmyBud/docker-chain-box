@@ -6,11 +6,11 @@ do
   PROJECT=$(basename $FOLDER | tr '[:upper:]' '[:lower:]')
   unset GIT_COMMAND
   case $PROJECT in
-    apollo_booster) $GIT_COMMAND="http://github.com/blockitrocket/apollo $FOLDER/apollo"
+    apollo_booster) GIT_COMMAND="http://github.com/blockitrocket/apollo $FOLDER/apollo"
     ;;
-    eth_go_client) $GIT_COMMAND="https://github.com/ethereum/go-ethereum $FOLDER/geth"
+    eth_go_client) GIT_COMMAND="https://github.com/ethereum/go-ethereum $FOLDER/geth"
     ;;
-    eth_net_front) $GIT_COMMAND="https://github.com/cubedro/eth-netstats $FOLDER/netstats"
+    eth_net_front) GIT_COMMAND="https://github.com/cubedro/eth-netstats $FOLDER/netstats"
     ;;
     \?) echo "Project $PROJECT has no git requirements to fulfill..."
     ;;
