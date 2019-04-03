@@ -208,8 +208,8 @@ var contractMigrator = async function() {
                                                });
 
       if(abstractContract.options.address){
-        console.log("[DEPLOY] -> Deployed to: " + aContract.options.address);
-        contractOutput += "@{address=" + aContract.options.address.substr(2) + "}";
+        console.log("[DEPLOY] -> Deployed to: " + abstractContract.options.address);
+        contractOutput += "@{address=" + abstractContract.options.address.substr(2) + "}";
         contractOutput += "\n\n";
       } else {
         console.log("[DEPLOY] -> Failed to deploy contract!");
