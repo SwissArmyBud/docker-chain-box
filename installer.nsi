@@ -46,8 +46,8 @@ Section
     # get a random 4-digit number for post-fix and check it's free
     ${Do}
         ${Rnd} $0 1000 9999
-        StrCpy $ONE_TIME_PATH "BR-Tournamnent-$0"
-    ${LoopWhile} ${FileExists} "$DESKTOP\BR-Tournamnent-$0"
+        StrCpy $ONE_TIME_PATH "BR-Tournament-$0"
+    ${LoopWhile} ${FileExists} "$DESKTOP\BR-Tournament-$0"
 
     # send file to temp
     SetCompress off
