@@ -2,7 +2,7 @@
 echo "[INFO] -> Startup script beginning..."
 echo
 
-ls /app 1>/dev/null 2>&1
+ls /usr/local/bin/geth 1>/dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "[SETUP] -> Unpacking application..."
   tar -xzf bins.tar.gz
@@ -11,7 +11,7 @@ fi
 echo
 
 echo "Geth node type is: $GETH_NODE_TYPE"
-if [ $GETH_NODE_TYPE -ne "MASTER" ]; then
+if [ $GETH_NODE_TYPE != "MASTER" ]; then
   echo "[INFO] -> Generating nodekey for gEth..."
   bootnode -genkey /app/datadir/geth/nodekey
 fi
