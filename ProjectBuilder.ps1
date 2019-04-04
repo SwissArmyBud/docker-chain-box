@@ -7,7 +7,7 @@ param(
 )
 # See:
 # https://stackoverflow.com/a/43351197
-if(!$PSScriptRoot){ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent }
+if(!$psScriptRoot){ $psScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent }
 
 # Start timer
 $BUILD_TIMER =  [system.diagnostics.stopwatch]::StartNew()
@@ -20,7 +20,7 @@ $WORKING_DIR = PWD
 $CHAIN_TYPE = $CHAIN
 
 # Load tokens
-. $PSScriptRoot/Scripts/BuildTokenLoader.ps1
+. $psScriptRoot/Scripts/BuildTokenLoader.ps1
 echo "$BUILD_EXPORT_VAR"
 ECHO ${NL}
 
@@ -35,7 +35,7 @@ if(!$CHAIN_TYPE){
       ECHO "[INFO] -> Chain has $FUNDERS funders..."
       ECHO "[INFO] -> Chain has $OWNERS owners..."
       # Run chain init
-      . $PSScriptRoot/Scripts/WinInitChain.ps1
+      . $psScriptRoot/Scripts/InitChain.ps1
       $CONTRACT_COUNT = 0
       if ($CONTRACTS.length -ne 0) {
         $CONTRACT_COUNT = $CONTRACTS.Split(",").count
@@ -43,7 +43,7 @@ if(!$CHAIN_TYPE){
       # Run chain fill
       ECHO "[INFO] -> Chain has $CONTRACT_COUNT contracts..."
       if ($CONTRACT_COUNT -ne 0) {
-        . $PSScriptRoot/Scripts/WinMigrateChain.ps1
+        . $psScriptRoot/Scripts/MigrateChain.ps1
       }
       break
     }
@@ -60,7 +60,7 @@ if(!$CHAIN_TYPE){
 ECHO ${NL}
 
 # Build the tournament containers
-. $PSScriptRoot/Scripts/WinBuildRunner.ps1
+. $psScriptRoot/Scripts/BuildRunner.ps1
 ECHO ${NL}
 
 # Stop the stopwatch and report its time
@@ -70,5 +70,5 @@ ECHO "[TIME] --> Build took: $BUILD_TIMER seconds..."
 ECHO ${NL}${NL}
 
 # Notify via Twilio that we have finished
-. $PSScriptRoot/Scripts/TwilioNotifier.ps1 -text "Project has finished building! Back to work!"
+. $psScriptRoot/Scripts/TwilioNotifier.ps1 -text "Project has finished building! Back to work!"
 ECHO ${NL}

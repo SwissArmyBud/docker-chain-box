@@ -47,18 +47,20 @@ echo "[INFO] -> Copying raw build files into directory..."
 # Move composer to build directory
 cp ${shScriptRoot}/docker-compose.yaml ${shScriptRoot}/Tournament
 # Move compose-time token loader to build
-cp ${shScriptRoot}/Scripts/ComposeTokenLoader.sh ${shScriptRoot}/Tournament/scripts
+cp ${shScriptRoot}/Scripts/ComposeTokenLoader.ps1 ${shScriptRoot}/Tournament/scripts
+# Move electron build to build
+cp -r ${shScriptRoot}/Scripts/Electron/* ${shScriptRoot}/Tournament/electron
+# Add docker handler script to electron directory
+cp ${shScriptRoot}/Scripts/ChainRunner.ps1 ${shScriptRoot}/Tournament/electron
 # Move runners to build
-cp ${shScriptRoot}/Scripts/ChainRunner.exe ${shScriptRoot}/Tournament
-cp ${shScriptRoot}/Scripts/TournamentRunner.exe ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Scripts/ChainKicker.exe ${shScriptRoot}/Tournament
+cp ${shScriptRoot}/Scripts/TournamentKicker.exe ${shScriptRoot}/Tournament
 # Move chain to build
 cp -r ${shScriptRoot}/Projects/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
 # Move chain read-outs to build
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
-# Move electron build to build
-cp -r ${shScriptRoot}/Scripts/Electron/* ${shScriptRoot}/Tournament/electron
 
 # Push project into zip file
 cd ${shScriptRoot}/Tournament

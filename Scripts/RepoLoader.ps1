@@ -1,7 +1,7 @@
 
-if(!$PSScriptRoot){ $PSScriptRoot = $(Get-Location | Select -expandproperty Path) }
+if(!$psScriptRoot){ $psScriptRoot = $(Get-Location | Select -expandproperty Path) }
 
-foreach( $FOLDER in $(Get-ChildItem -dir "${PSScriptRoot}/Projects" | ForEach-Object { $_.Name.ToLower() }) ) {
+foreach( $FOLDER in $(Get-ChildItem -dir "${psScriptRoot}/Projects" | ForEach-Object { $_.Name.ToLower() }) ) {
   Remove-Variable GIT_COMMAND
   switch ($FOLDER){
     "apollo_booster" {

@@ -1,12 +1,12 @@
 
-ECHO $PSScriptRoot
+ECHO $psScriptRoot
 
 # Setup rigs
 $NL="`r`n"
 ECHO ${NL}
 
 # Move into Projects folder
-Set-Location -Path ${PSScriptRoot}/Projects
+Set-Location -Path ${psScriptRoot}/Projects
 
 # Grab current folder layout
 $DOCKER_PROJECTS = Get-ChildItem -dir | ForEach-Object { $_.Name.ToLower() }
@@ -14,11 +14,11 @@ ECHO "Building the following projects: $DOCKER_PROJECTS"
 ECHO ${NL}
 
 # Create build directory
-if(Test-Path ${PSScriptRoot}/Tournament){
-  Remove-Item -Recurse -Path ${PSScriptRoot}/Tournament
+if(Test-Path ${psScriptRoot}/Tournament){
+  Remove-Item -Recurse -Path ${psScriptRoot}/Tournament
 }
-if(Test-Path ${PSScriptRoot}/Tournament.zip){
-  Remove-Item ${PSScriptRoot}/Tournament.zip
+if(Test-Path ${psScriptRoot}/Tournament.zip){
+  Remove-Item ${psScriptRoot}/Tournament.zip
 }
 New-Item -ItemType directory -Path ./Tournament
 New-Item -ItemType directory -Path ./Tournament/images
@@ -55,25 +55,27 @@ foreach($PROJECT in $DOCKER_PROJECTS) {
   ECHO ${NL}
 }
 
-Set-Location -Path ${PSScriptRoot}
+Set-Location -Path ${psScriptRoot}
 
 # Todo - Split this off into a project-manageable section for decoupling
 # Currently the assumption is that ETH_GO_CLIENT is indeed being build/packed
 # Move composer to build directory
-Copy-Item ${PSScriptRoot}/docker-compose.yaml -Destination ${PSScriptRoot}/Tournament
+Copy-Item ${psScriptRoot}/docker-compose.yaml -Destination ${psScriptRoot}/Tournament
 # Move compose-time token loader to build
-Copy-Item ${PSScriptRoot}/Scripts/ComposeTokenLoader.ps1 -Destination ${PSScriptRoot}/Tournament/scripts
-# Move runners to build
-Copy-Item ${PSScriptRoot}/Scripts/ChainRunner.exe -Destination ${PSScriptRoot}/Tournament
-Copy-Item ${PSScriptRoot}/Scripts/TournamentRunner.exe -Destination ${PSScriptRoot}/Tournament
-# Move chain to build
-Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/datadir -Destination ${PSScriptRoot}/Tournament/datadir -Recurse
-# Move chain read-outs to build
-Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt -Destination ${PSScriptRoot}/Tournament -Recurse
-Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt -Destination ${PSScriptRoot}/Tournament -Recurse
-Copy-Item ${PSScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob -Destination ${PSScriptRoot}/Tournament -Recurse
+Copy-Item ${psScriptRoot}/Scripts/ComposeTokenLoader.ps1 -Destination ${psScriptRoot}/Tournament/scripts
 # Move electron build to build
-Copy-Item ${PSScriptRoot}/Scripts/Electron/* -Destination ${PSScriptRoot}/Tournament/electron -Recurse
+Copy-Item ${psScriptRoot}/Scripts/Electron/* -Destination ${psScriptRoot}/Tournament/electron -Recurse
+# Add docker handler script to electron directory
+Copy-Item ${psScriptRoot}/Scripts/ChainRunner.ps1 -Destination ${psScriptRoot}/Tournament/electron -Recurse
+# Move runners to build
+Copy-Item ${psScriptRoot}/Scripts/ChainRunner.exe -Destination ${psScriptRoot}/Tournament
+Copy-Item ${psScriptRoot}/Scripts/TournamentRunner.exe -Destination ${psScriptRoot}/Tournament
+# Move chain to build
+Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/datadir -Destination ${psScriptRoot}/Tournament/datadir -Recurse
+# Move chain read-outs to build
+Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt -Destination ${psScriptRoot}/Tournament -Recurse
+Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt -Destination ${psScriptRoot}/Tournament -Recurse
+Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob -Destination ${psScriptRoot}/Tournament -Recurse
 
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"
