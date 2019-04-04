@@ -11,9 +11,7 @@ RUN \
     rm -rf /app/node_modules/grunt* && rm -rf /app/.git &&\
     # Go home and pack up application
     echo "Go home and pack up application..." &&\
-    cd / &&\
-    tar -czvf app.tar.gz /app &&\
-    rm -rf /app
+    cd / && tar -czf app.tar.gz /app && rm -rf /app
 
 # Pull application into a second stage deploy container
 FROM alpine:3.9
