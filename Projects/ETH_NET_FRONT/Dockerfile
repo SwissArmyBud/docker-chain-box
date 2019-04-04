@@ -3,7 +3,7 @@ COPY /netstats /app
 RUN \
     # Update Alpine and grab packages
     echo "Update Alpine and grab packages..." &&\
-    apk update && apk upgrade && apk add tar nodejs && rm -rf /var/cache/apk/* &&\
+    apk update && apk upgrade && apk add tar nodejs nodejs-npm && rm -rf /var/cache/apk/* &&\
     # Head into application and install deps, build, and clean up
     echo "Head into application and install deps, build, and clean up..." &&\
     cd /app &&\
