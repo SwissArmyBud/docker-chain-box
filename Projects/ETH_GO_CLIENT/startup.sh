@@ -27,6 +27,7 @@ IEX="geth \
 --nodekey /app/datadir/geth/nodekey \
 --datadir /app/datadir \
 --unlock $ACCOUNT_ADDRESS \
+--etherbase $ACCOUNT_ADDRESS \
 --password /app/datadir/guid.blob \
 --ethstats DockerNode-$RAND:socketsecret2@eth_net_front:3010 \
 --mine \
