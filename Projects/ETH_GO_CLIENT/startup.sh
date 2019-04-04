@@ -22,12 +22,12 @@ echo
 
 echo "[INFO] -> Starting gEth application..."
 RAND=$(</dev/urandom tr -dc 0-9 | head -c 4)
+ACCOUNT_ADDRESS=$(grep -Po '"address":"\K.*?(?=")' "/app/datadir/keystore/SIGNER1.blob")
 IEX="geth \
 --nodekey /app/datadir/geth/nodekey \
 --datadir /app/datadir \
---unlock /app/datadir/keystore/SIGNER1.blob \
+--unlock $ACCOUNT_ADDRESS \
 --password /app/datadir/guid.blob \
---mine \
 --ethstats DockerNode-$RAND:socketsecret2@eth_net_front:3010 \
 "
 echo "[CMD] -> $IEX"

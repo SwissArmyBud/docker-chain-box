@@ -35,7 +35,8 @@ do
   mv ${CLIENT_PATH}/datadir/keystore/UTC* "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob"
   # Log the new account to a readable format for the users
   echo "$PREFIX - #$KEY" >> "${CLIENT_PATH}/accounts.txt"
-  echo "@{address=$(grep -Po '"address":"\K.*?(?=")' "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob")}" >> "${CLIENT_PATH}/accounts.txt"
+  ACCOUNT_ADDRESS=$(grep -Po '"address":"\K.*?(?=")' "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob")
+  echo "@{address=$ACCOUNT_ADDRESS}" >> "${CLIENT_PATH}/accounts.txt"
   echo >> "${CLIENT_PATH}/accounts.txt"
 done
 echo
