@@ -22,7 +22,7 @@ echo
 
 echo "[INFO] -> Starting gEth application..."
 RAND=$(</dev/urandom tr -dc 0-9 | head -c 4)
-ACCOUNT_ADDRESS=$(grep -Po '"address":"\K.*?(?=")' "/app/datadir/keystore/SIGNER1.blob")
+ACCOUNT_ADDRESS=$(sed -n 's/{"address":"\([0-9a-zA-Z]*\)".*/\1/p' /app/datadir/keystore/SIGNER1.blob)
 IEX="geth \
 --nodekey /app/datadir/geth/nodekey \
 --datadir /app/datadir \
