@@ -29,6 +29,7 @@ IEX="geth \
 --unlock $ACCOUNT_ADDRESS \
 --password /app/datadir/guid.blob \
 --ethstats DockerNode-$RAND:socketsecret2@eth_net_front:3010 \
+--mine \
 "
 echo "[CMD] -> $IEX"
 echo $@

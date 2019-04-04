@@ -201,6 +201,7 @@ var contractMigrator = async function() {
                                                  console.log("[DEPLOY] -> Tx Hash: " + tx);
                                                }).on('receipt', (rc) => {
                                                  console.log("[DEPLOY] -> Receipt: ");
+                                                 delete rc.logsBloom;
                                                  console.log(rc);
                                                }).catch( (er) => {
                                                  console.log("[DEPLOY] -> Error reported: ");
