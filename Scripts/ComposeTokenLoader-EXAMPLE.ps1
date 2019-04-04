@@ -12,7 +12,7 @@ ECHO ${NL}
 # https://github.com/docker/compose/issues/4189#issuecomment-320362242
 ECHO "[INFO] -> Loading COMPOSE_EXPORT_VAR into host env..."
 $env:COMPOSE_EXPORT_VAR = "COMPOSE_EXPORT_VALUE"
-
+$env:COMPOSE_NODE_PASS = "<YOUR GUID BLOB HERE>"
 ### LOAD DONE
 
 ECHO ${NL}

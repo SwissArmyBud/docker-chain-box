@@ -13,6 +13,7 @@ services:
       - "30300:30303/udp"
     environment:
       - GETH_NODE_TYPE=MASTER
+      - GETH_NODE_PASS=$COMPOSE_NODE_PASS
 
   eth_net_front:
     image: tournament/eth_net_front:latest
