@@ -32,3 +32,6 @@ foreach( $FOLDER in $(Get-ChildItem -dir "${psScriptRoot}/Projects" | ForEach-Ob
 cd ${psScriptRoot}/Scripts/ChainJS
 npm install
 cd ${psScriptRoot}
+
+Copy-Item ${psScriptRoot}/Scripts/BuildTokenLoader-EXAMPLE.ps1 -Destination ${psScriptRoot}/Scripts/BuildTokenLoader.ps1 -Recurse
+Copy-Item ${psScriptRoot}/Scripts/ComposeTokenLoader-EXAMPLE.ps1 -Destination ${psScriptRoot}/Scripts/ComposeTokenLoader.ps1 -Recurse

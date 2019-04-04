@@ -29,4 +29,7 @@ cd ${shScriptRoot}/Scripts/ChainJS
 npm install
 cd ${shScriptRoot}
 
+cp ${shScriptRoot}/Scripts/BuildTokenLoader-EXAMPLE.sh ${shScriptRoot}/Scripts/BuildTokenLoader.sh
+cp ${shScriptRoot}/Scripts/ComposeTokenLoader-EXAMPLE.ps1 ${shScriptRoot}/Scripts/ComposeTokenLoader.ps1
+
 chmod +x ${shScriptRoot}/ProjectBuilder.sh
