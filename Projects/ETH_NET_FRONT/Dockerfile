@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.9 as builder
 COPY /netstats /app
 RUN \
     # Update Alpine and grab packages
@@ -14,6 +14,15 @@ RUN \
     cd / &&\
     tar -czvf app.tar.gz /app &&\
     rm -rf /app
+
+# Pull application into a second stage deploy container
+FROM alpine:3.9
+RUN \
+    # Update Alpine and grab packages
+    echo "Update Alpine and grab packages..." &&\
+    apk update && apk upgrade && apk add tar nodejs && rm -rf /var/cache/apk/* &&\
+COPY --from=builder app.tar.gz /
 COPY startup.sh /
+
 ENTRYPOINT ["/bin/ash"]
 CMD ["/startup.sh"]
