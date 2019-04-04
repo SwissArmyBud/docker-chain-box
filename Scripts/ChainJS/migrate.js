@@ -9,6 +9,8 @@ var Web3 = require('web3')
 var web3;
 
 var gethDir = process.cwd() + "/Projects/ETH_GO_CLIENT";
+var datadir = gethDir + "/datadir";
+var keystore = gethDir + "/datadir/keystore";
 
 // Get the genesis file and see how many signers are included
 var rocketship = JSON.parse(fs.readFileSync(gethDir + "/genesis.json"));
@@ -17,7 +19,6 @@ var signerCount = ( rocketship.extraData.length - ( 2 + 64 + 130) ) / 40;
 console.log("[JS] -> There are " + signerCount + " signers in the genesis file...");
 
 // Get access to keystore
-var keystore = gethDir + "/datadir/keystore";
 var signerList = [];
 var ownerList = [];
 fs.readdirSync(keystore).forEach( (file) => {
@@ -27,7 +28,7 @@ fs.readdirSync(keystore).forEach( (file) => {
 
 // Unlock all the accounts we need
 var unlockDuration = 600;
-var keyBlob = fs.readFileSync(gethDir + "/guid.blob").toString().trim();
+var keyBlob = fs.readFileSync(datadir + "/guid.blob").toString().trim();
 var accountsKeyed = 0;
 var unlockOwners = function(){
   ownerList.forEach( async (owner) => {
@@ -112,10 +113,9 @@ var processList = [];
 var startSigners = function(){
   for(var i = 0; i < signerCliqueCount; i++){
     console.log("[JS] -> Spawning new Geth signer for PoA - Position #" + i);
-    var datadir = gethDir + "/datadir";
     let childArgs = [ "--unlock", signerList[i],
                       "--etherbase", signerList[i],
-                      "--password", gethDir + "/guid.blob",
+                      "--password", datadir + "/guid.blob",
                       "--mine",
                       "--targetgaslimit", "10000000"
                     ];

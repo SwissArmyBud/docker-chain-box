@@ -2,11 +2,12 @@
 CLIENT_PATH="${shScriptRoot}/Projects/ETH_GO_CLIENT"
 
 # Clean up client path
-rm -r -f "${CLIENT_PATH}/datadir"
+rm -rf "${CLIENT_PATH}/datadir"
+mkdir "${CLIENT_PATH}/datadir"
 
 # Get a new blob to lock the accounts
-rm "${shScriptRoot}${CLIENT_PATH}/guid.blob" 2>/dev/null
-echo $( cat /proc/sys/kernel/random/uuid | sed -e "s/[[:punct:]]\+//g" ) > "${CLIENT_PATH}/guid.blob"
+echo $( cat /proc/sys/kernel/random/uuid | sed -e "s/[[:punct:]]\+//g" ) > "${CLIENT_PATH}/datadir/guid.blob"
+echo "" >> "${CLIENT_PATH}/datadir/guid.blob"
 
 # Generate the new accounts and report their values
 echo "[INFO] -> Generating keys for new chain..."
@@ -30,7 +31,7 @@ do
   echo
   echo "$PREFIX - #$KEY"
   # Create account with key, and rename for purpose
-  geth --datadir "${CLIENT_PATH}/datadir" account new --password "${CLIENT_PATH}/guid.blob"
+  geth --datadir "${CLIENT_PATH}/datadir" account new --password "${CLIENT_PATH}/datadir/guid.blob"
   mv ${CLIENT_PATH}/datadir/keystore/UTC* "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob"
   # Log the new account to a readable format for the users
   echo "$PREFIX - #$KEY" >> "${CLIENT_PATH}/accounts.txt"

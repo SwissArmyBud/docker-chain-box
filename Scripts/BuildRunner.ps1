@@ -75,7 +75,6 @@ Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/datadir -Destination ${psScript
 # Move chain read-outs to build
 Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt -Destination ${psScriptRoot}/Tournament -Recurse
 Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt -Destination ${psScriptRoot}/Tournament -Recurse
-Copy-Item ${psScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob -Destination ${psScriptRoot}/Tournament -Recurse
 
 # Push project into zip file (auto extension by PSh)
 Add-Type -assembly "system.io.compression.filesystem"

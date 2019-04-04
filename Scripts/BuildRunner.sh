@@ -60,7 +60,6 @@ cp -r ${shScriptRoot}/Projects/ETH_GO_CLIENT/datadir ${shScriptRoot}/Tournament
 # Move chain read-outs to build
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/accounts.txt ${shScriptRoot}/Tournament
 cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/contracts.txt ${shScriptRoot}/Tournament
-cp ${shScriptRoot}/Projects/ETH_GO_CLIENT/guid.blob ${shScriptRoot}/Tournament
 
 # Push project into zip file
 cd ${shScriptRoot}/Tournament

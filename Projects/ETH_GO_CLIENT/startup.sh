@@ -25,9 +25,9 @@ RAND=$(</dev/urandom tr -dc 0-9 | head -c 4)
 IEX="geth \
 --nodekey /app/datadir/geth/nodekey \
 --datadir /app/datadir \
---unlock /app/datadir/geth/keystore/SIGNER1.blob \
---password $GETH_NODE_PASS
---mine
+--unlock /app/datadir/keystore/SIGNER1.blob \
+--password /app/datadir/guid.blob \
+--mine \
 --ethstats DockerNode-$RAND:socketsecret2@eth_net_front:3010 \
 "
 echo "[CMD] -> $IEX"

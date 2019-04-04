@@ -12,7 +12,7 @@ Remove-Item -Force -Recurse "${CLIENT_PATH}/datadir" -ErrorAction SilentlyContin
 Remove-Item -Force -Recurse "${CLIENT_PATH}/datadir" -ErrorAction SilentlyContinue
 
 # Get a new blob to lock the accounts
-(([guid]::newguid().toString() -replace "[-]" -replace "[ ]")) + "`n" | set-content "${CLIENT_PATH}/guid.blob" -encoding Ascii
+(([guid]::newguid().toString() -replace "[-]" -replace "[ ]")) + "`n" | set-content "${CLIENT_PATH}/datadir/guid.blob" -encoding Ascii
 # `
 # ^ Formatting tweak, no impact - catches backquote from previous line
 
@@ -36,7 +36,7 @@ for ($I=1; $I -le $TOTAL; $I++) {
   ECHO ${NL}
   ECHO "$PREFIX - #$KEY"
   # Create account with key, and rename for purpose
-  geth --datadir "${CLIENT_PATH}/datadir" account new --password "${CLIENT_PATH}/guid.blob"
+  geth --datadir "${CLIENT_PATH}/datadir" account new --password "${CLIENT_PATH}/datadir/guid.blob"
   mv "${CLIENT_PATH}/datadir/keystore/UTC*" "${CLIENT_PATH}/datadir/keystore/${PREFIX}${KEY}.blob"
   # Log the new account to a readable format for the users
   (("$PREFIX - #$KEY")) | add-content "${CLIENT_PATH}/accounts.txt" -encoding Ascii
