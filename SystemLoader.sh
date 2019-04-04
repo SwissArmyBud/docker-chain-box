@@ -1,5 +1,5 @@
 
-shScriptRoot=$( pwd )
+shScriptRoot=$( cd $( dirname ${BASH_SOURCE[0]} ) >/dev/null 2>&1 && pwd )
 
 for FOLDER in $(find ${shScriptRoot}/Projects -maxdepth 1 -mindepth 1 -type d)
 do
@@ -23,3 +23,10 @@ do
   fi
   echo
 done
+
+
+cd ${shScriptRoot}/Scripts/ChainJS
+npm install
+cd ${shScriptRoot}
+
+chmod +x ${shScriptRoot}/ProjectBuilder.sh

@@ -28,3 +28,7 @@ foreach( $FOLDER in $(Get-ChildItem -dir "${psScriptRoot}/Projects" | ForEach-Ob
   }
   echo
 }
+
+cd ${psScriptRoot}/Scripts/ChainJS
+npm install
+cd ${psScriptRoot}
