@@ -16,7 +16,7 @@ RUN \
 FROM alpine:3.9
 COPY --from=builder bins.tar.gz /
 COPY startup.sh /
-ADD datadir /root/datadir
+ADD datadir /app/datadir/
 
 ENTRYPOINT ["/bin/ash"]
 CMD ["/startup.sh"]
