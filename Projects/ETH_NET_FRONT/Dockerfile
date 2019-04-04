@@ -7,7 +7,10 @@ RUN \
     # Head into application and install deps, build, and clean up
     echo "Head into application and install deps, build, and clean up..." &&\
     cd /app &&\
-    npm install && node /app/node_modules/grunt/lib/grunt.js &&\
+    npm install && npm install -g grunt-cli &&\
+    echo "Building application..." &&\
+    grunt &&\
+    echo "Cleaning up application..." &&\
     rm -rf /app/node_modules/grunt* && rm -rf /app/.git &&\
     # Go home and pack up application
     echo "Go home and pack up application..." &&\
